@@ -6,7 +6,7 @@
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python-009688.svg)](https://fastapi.tiangolo.com/)
 [![Docker](https://img.shields.io/badge/Deployment-Docker%20%26%20Compose-2496ED.svg)](https://www.docker.com/)
 
-![AgentFoundry Banner](https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=400&q=80)
+![AgentFoundry Banner](assets/project_banner.png)
 
 > An opinionated, production-grade template engineered for autonomous agent workflows. Scaffolds novel AI, robotics, and SaaS products from concept to cloud in minutes.
 
@@ -14,28 +14,61 @@
 
 ##  Architecture Overview
 
-```
-                      +-----------------------------+
-                      |   System Orchestrator       |
-                      |   (Claude / Codex / GPT)     |
-                      +--------------+--------------+
-                                     |
-                +--------------------+--------------------+
-                |                                         |
-     [ MCP Layer: Context & Tools ]             [ Agent Personas ]
-     - Filesystem & Git Inspector               - Architect & PM
-     - Database Inspector (Postgres)            - Full-Stack Developer
-     - Docker & Runtime Control                 - Test & Deployment Lead
-                |                                         |
-                +--------------------+--------------------+
-                                     |
-             +-----------------------+-----------------------+
-             |                                               |
-  +----------v-----------+                       +-----------v----------+
-  |   Frontend Module    |                       |    Backend Module    |
-  |  Next.js 15 App Dir  | <--- OpenAPI / WS --  |   FastAPI + Async    |
-  |  Tailwind + shadcn   |                       |   SQLAlchemy 2.0     |
-  +----------------------+                       +----------------------+
+```mermaid
+flowchart TD
+    subgraph Orchestrator["🧠 System Orchestrator"]
+        direction TB
+        AI["Claude / Codex / GPT-5"]
+    end
+
+    subgraph MCP["🔌 MCP Layer: Context & Tools"]
+        direction TB
+        FS["Filesystem & Git Inspector"]
+        DB["Database Inspector<br/>(Postgres)"]
+        DK["Docker & Runtime Control"]
+    end
+
+    subgraph Agents["🤖 Agent Personas"]
+        direction TB
+        PM["Architect & PM"]
+        DEV["Full-Stack Developer"]
+        QA["Test & Deployment Lead"]
+    end
+
+    subgraph Frontend["⚡ Frontend Module"]
+        direction TB
+        NEXT["Next.js 15 App Router"]
+        UI["Tailwind + shadcn/ui"]
+    end
+
+    subgraph Backend["⚙️ Backend Module"]
+        direction TB
+        API["FastAPI + Async"]
+        ORM["SQLAlchemy 2.0"]
+    end
+
+    Orchestrator --> MCP
+    Orchestrator --> Agents
+    
+    MCP --> Frontend
+    MCP --> Backend
+    
+    Agents --> Frontend
+    Agents --> Backend
+    
+    Frontend <== "OpenAPI / WS" ==> Backend
+
+    classDef orchestrator fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#ffffff
+    classDef mcp fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#ffffff
+    classDef agents fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#ffffff
+    classDef frontend fill:#10b981,stroke:#059669,stroke-width:2px,color:#ffffff
+    classDef backend fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#ffffff
+
+    class Orchestrator orchestrator
+    class MCP mcp
+    class Agents agents
+    class Frontend frontend
+    class Backend backend
 ```
 
 ---
